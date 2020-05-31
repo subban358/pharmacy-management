@@ -35,3 +35,5 @@ urlpatterns = [
     ), name='password_reset_complete'),
 ]        
 
+admin.site.site_header = 'Pharmacy World Admin Panel'
+admin.site.site_title = 'Phamacy World Admin'

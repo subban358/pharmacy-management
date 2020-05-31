@@ -43,7 +43,7 @@ def signup(request):
                 user = User.objects.create_user(username = username, password = pass1, email = email, first_name = firstname, last_name = lastname)
                 user.save()
                 subject = "Welcome to Pharmacy World"
-                msg = "We are glad to have you on board with us.\nYour health is our number one priority, explore your dashboard for all the world class services we provide.\n\nBest Regards,\nPharmacy World Team"
+                msg = "Greetings "+firstname+" we are glad to have you on board with us.\nYour health is our number one priority, explore your dashboard for all the world class services we provide.\n\nBest Regards,\nPharmacy World Team"
                 from_email = settings.EMAIL_HOST_USER
                 to_list = [email]
                 send_mail(subject, msg, from_email, to_list, fail_silently=True)

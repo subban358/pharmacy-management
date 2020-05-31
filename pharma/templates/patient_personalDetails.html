@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <div class="container">
+    <div class="container mt-3" >
         {% if d.status %}
             <h1>You are already registered</h1>
             <form action="edit" method="POST">
@@ -10,11 +10,13 @@
             </form>
         {% else %}
             <h1>Not registered</h1>
-            <form method="POST">
-                {% csrf_token %}
-                {{form.as_p}}
-                <input type="submit" class="btn btn-primary" value="submit">
-            </form>
+            <div class="form-group">
+                <form method="POST">
+                    {% csrf_token %}
+                    {{form.as_p}}
+                    <input type="submit" class="btn btn-primary" value="submit">
+                </form>
+            </div>    
         {% endif %}        
     </div>
 {% endblock %}
