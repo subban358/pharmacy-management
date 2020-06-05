@@ -4,9 +4,10 @@ from django.contrib import messages
 from django.http import HttpResponse
 from .models import patientsPersonalDetail
 from django.views.decorators.csrf import csrf_exempt
-from .forms import patient_personalDetailForm
+from .forms import patient_personalDetailForm, MedicineForm
 from django.core.mail import send_mail
 from django.conf import settings
+
 
 def home(request):
     return render(request, 'home.html')
@@ -90,3 +91,7 @@ def edit(request):
         obj.save()
         return home(request)
     return render(request, 'edit.html', {'form': form})
+def buy_med(request):
+    form = MedicineForm(request.POST)
+    if form.is_valid():
+        update = MedicineForm()

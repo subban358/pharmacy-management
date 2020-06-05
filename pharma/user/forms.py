@@ -1,6 +1,6 @@
 from django import forms
 from django.core import validators
-from .models import patientsPersonalDetail
+from .models import patientsPersonalDetail, Medicine
 
 class DateInput(forms.DateInput):
     	input_type = 'date'
@@ -21,3 +21,12 @@ class patient_personalDetailForm(forms.ModelForm):
             }),
             'user' : forms.Select(attrs={'class': 'form-control required'})
         }
+
+class MedicineForm(forms.ModelForm):
+    model = Medicine
+    fields = ['med_name', 'med_brand', 'med_stock', 'med_price', 'med_type']
+    widgets = {
+        'med_name': forms.TextInput(attrs={
+            'class': 'form-control'
+        })
+    }

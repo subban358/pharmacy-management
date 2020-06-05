@@ -10,4 +10,12 @@ class patientsPersonalDetail(models.Model):
     dob = models.DateField(default=timezone.now, blank=False)
     address = models.TextField(max_length=255)
     mobile = models.CharField(max_length=12)
-    
+
+class Medicine(models.Model):
+    med_name = models.CharField(max_length=50)
+    med_brand = models.CharField(max_length=100)
+    med_stock = models.IntegerField(default=0) 
+    med_price = models.IntegerField(default=0) 
+    med_type = models.CharField(max_length=50)  
+    def __str__(self):
+        return self.med_name
