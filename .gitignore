@@ -8,6 +8,7 @@ __pycache__/
 
 # Distribution / packaging
 requirements.txt
+*.txt
 .Python
 build/
 develop-eggs/
