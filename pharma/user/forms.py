@@ -1,6 +1,6 @@
 from django import forms
 from django.core import validators
-from .models import patientsPersonalDetail, Medicine
+from .models import patientsPersonalDetail, Medicine, Order
 
 class DateInput(forms.DateInput):
     	input_type = 'date'
@@ -22,11 +22,13 @@ class patient_personalDetailForm(forms.ModelForm):
             'user' : forms.Select(attrs={'class': 'form-control required'})
         }
 
-class MedicineForm(forms.ModelForm):
-    model = Medicine
-    fields = ['med_name', 'med_brand', 'med_stock', 'med_price', 'med_type']
-    widgets = {
-        'med_name': forms.TextInput(attrs={
-            'class': 'form-control'
-        })
-    }
+class OrderForm(forms.ModelForm):
+    class Meta:
+        model = Order
+        fields = ('medicine', 'quantity')
+        widgets = {
+            'medicine': forms.Select(attrs={
+                'class': 'form-control'
+            }),
+            'quantity' : forms.NumberInput(attrs={'class': 'form-control'}),
+        }

@@ -19,3 +19,9 @@ class Medicine(models.Model):
     med_type = models.CharField(max_length=50)  
     def __str__(self):
         return self.med_name
+
+class Order(models.Model):
+    patient = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    medicine = models.ForeignKey(Medicine, on_delete=models.CASCADE)
+    quantity = models.IntegerField(default=0)
+    date_of_order = models.DateField(default=timezone.now, blank=False)

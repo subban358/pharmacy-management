@@ -2,9 +2,9 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User, auth
 from django.contrib import messages
 from django.http import HttpResponse
-from .models import patientsPersonalDetail
+from .models import patientsPersonalDetail, Medicine, Order
 from django.views.decorators.csrf import csrf_exempt
-from .forms import patient_personalDetailForm, MedicineForm
+from .forms import patient_personalDetailForm, OrderForm
 from django.core.mail import send_mail
 from django.conf import settings
 
@@ -91,7 +91,15 @@ def edit(request):
         obj.save()
         return home(request)
     return render(request, 'edit.html', {'form': form})
+
 def buy_med(request):
-    form = MedicineForm(request.POST)
+    form = OrderForm(request.POST, initial={'patient' : request.user})
+        
     if form.is_valid():
-        update = MedicineForm()
+        
+        instance = form.save(commit = False)
+        instance.patient = request.user
+        instance.save()
+        return home(request)
+        
+    return render(request, 'buy_med.html', {'form': form})    
