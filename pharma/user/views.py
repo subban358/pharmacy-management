@@ -115,5 +115,4 @@ def buy_med(request):
         instance.cost = int(price*qty)
         instance.save()
         return home(request)
-        
     return render(request, 'buy_med.html', {'form': form})    
