@@ -53,6 +53,7 @@ def signup(request):
             messages.info(request, "passwords not matching")
             return redirect('signup')
     return redirect('/')
+@csrf_exempt
 def logout(request):
     if request.method == 'POST':
         auth.logout(request)
@@ -96,9 +97,22 @@ def buy_med(request):
     form = OrderForm(request.POST, initial={'patient' : request.user})
         
     if form.is_valid():
-        
+        qty = form.cleaned_data['quantity']
+        med = form.cleaned_data['medicine']
+        prv = Medicine.objects.filter(med_name=med).values()[0]['med_stock']
+        pk = Medicine.objects.filter(med_name=med).values()[0]['id']
+        price =  Medicine.objects.filter(med_name=med).values()[0]['med_price']
+        update = Medicine.objects.get(id=pk)
+        new = int(prv)-int(qty)
+        if new <= 0:
+            update.med_stock = 0
+        else:
+            update.med_stock = int(new)
+        update.save()        
+        print(prv, qty)
         instance = form.save(commit = False)
         instance.patient = request.user
+        instance.cost = int(price*qty)
         instance.save()
         return home(request)
         

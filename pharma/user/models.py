@@ -25,3 +25,6 @@ class Order(models.Model):
     medicine = models.ForeignKey(Medicine, on_delete=models.CASCADE)
     quantity = models.IntegerField(default=0)
     date_of_order = models.DateField(default=timezone.now, blank=False)
+    cost = models.IntegerField(default=0)
+    def __str__(self):
+        return self.patient.username+"'s order"
