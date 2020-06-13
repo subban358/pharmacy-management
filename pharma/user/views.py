@@ -2,11 +2,13 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User, auth
 from django.contrib import messages
 from django.http import HttpResponse
+from django.views.generic import View
 from .models import patientsPersonalDetail, Medicine, Order
 from django.views.decorators.csrf import csrf_exempt
 from .forms import patient_personalDetailForm, OrderForm
 from django.core.mail import send_mail
 from django.conf import settings
+from .utils import render_to_pdf
 
 
 def home(request):
@@ -109,10 +111,43 @@ def buy_med(request):
         else:
             update.med_stock = int(new)
         update.save()        
-        print(prv, qty)
+        #print(prv, qty)
         instance = form.save(commit = False)
         instance.patient = request.user
         instance.cost = int(price*qty)
         instance.save()
-        return home(request)
+        oid = instance.id
+        #print(oid)
+        return bill(request, oid)
     return render(request, 'buy_med.html', {'form': form})    
+
+def bill(request, oid):
+    s = Order.objects.filter(id=oid).values()[0]
+    order_id = s['id']
+    ptn_id = s['patient_id']
+    med_id = s['medicine_id']
+    qty = s['quantity']
+    date = s['date_of_order']
+    cost = s['cost']
+    u = User.objects.filter(id=ptn_id).values()[0]
+    med = Medicine.objects.filter(id=med_id).values()[0]['med_name']
+    price = Medicine.objects.filter(id=med_id).values()[0]['med_price']
+    fname = u['first_name']
+    lname = u['last_name']
+    email = u['email']
+    address = patientsPersonalDetail.objects.filter(user=request.user).values()[0]['address']
+    contex = {
+        'order_id':order_id,
+        'ptn_id':ptn_id,
+        'med':med,
+        'qty':qty,
+        'date':date,
+        'cost':cost,
+        'address':address,
+        'price':price,
+        'name':fname+" "+lname,
+        'email':email
+    }
+    pdf = render_to_pdf('bill.html', contex)
+    return HttpResponse(pdf, content_type='application/pdf')
+  
