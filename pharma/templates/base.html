@@ -148,24 +148,7 @@
         </div>
         {% endif %}
     </nav>
-    {% if user.is_authenticated %}
-    <div class="alert alert-warning alert-dismissible fade show" role="alert">
-        <strong>Welcome {{user.first_name}}</strong>
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-    {% else %}
-    {% for i in messages%}
-    <div class="alert alert-warning alert-dismissible fade show" role="alert">
-        <strong>{{i}}</strong>
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-    {% endfor %}
-    {% endif %}
-
+    
     {% block content %}
     {% endblock %}
     <!-- Optional JavaScript -->
