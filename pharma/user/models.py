@@ -12,6 +12,7 @@ class patientsPersonalDetail(models.Model):
     mobile = models.CharField(max_length=12)
 
 class Medicine(models.Model):
+    """All details about the medicines"""
     med_name = models.CharField(max_length=50)
     med_brand = models.CharField(max_length=100)
     med_stock = models.IntegerField(default=0) 
@@ -21,6 +22,7 @@ class Medicine(models.Model):
         return self.med_name
 
 class Order(models.Model):
+    """Keeping Records of the orders"""
     patient = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     medicine = models.ForeignKey(Medicine, on_delete=models.CASCADE)
     quantity = models.IntegerField(default=0)
@@ -28,3 +30,15 @@ class Order(models.Model):
     cost = models.IntegerField(default=0)
     def __str__(self):
         return self.patient.username+"'s order"
+
+class DoctorDetail(models.Model):
+    """All the details of the Doctors"""
+    DoctorName = models.CharField(max_length=100, error_messages={'required': 'hi'})
+    DoctorEmail = models.EmailField(max_length=100)
+    DoctorPassword = models.CharField(max_length=20)
+    Specialization = models.CharField(max_length=50)
+    def __str__(self):
+        return "Dr. "+self.DoctorName
+        
+
+

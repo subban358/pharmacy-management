@@ -3,9 +3,9 @@ from django.contrib.auth.models import User, auth
 from django.contrib import messages
 from django.http import HttpResponse
 from django.views.generic import View
-from .models import patientsPersonalDetail, Medicine, Order
+from .models import patientsPersonalDetail, Medicine, Order, DoctorDetail
 from django.views.decorators.csrf import csrf_exempt
-from .forms import patient_personalDetailForm, OrderForm
+from .forms import patient_personalDetailForm, OrderForm, DoctorDetailForm
 from django.core.mail import send_mail
 from django.conf import settings
 from .utils import render_to_pdf
@@ -83,7 +83,7 @@ def patient_personalDetails(request):
         return render(request, 'patient_personalDetails.html', {'form': form})
 def edit(request):
     user = patientsPersonalDetail.objects.get(user_id=request.user.id)
-    form = patient_personalDetailForm(request.POST, instance=user)
+    form = patient_personalDetailForm(request.POST or None, instance=user)
     if form.is_valid():
         update = patientsPersonalDetail()
         update.user = form.cleaned_data['user']
@@ -96,7 +96,7 @@ def edit(request):
     return render(request, 'edit.html', {'form': form})
 
 def buy_med(request):
-    form = OrderForm(request.POST, initial={'patient' : request.user})
+    form = OrderForm(request.POST or None, initial={'patient' : request.user} or None)
         
     if form.is_valid():
         qty = form.cleaned_data['quantity']
@@ -150,4 +150,13 @@ def bill(request, oid):
     }
     pdf = render_to_pdf('bill.html', contex)
     return HttpResponse(pdf, content_type='application/pdf')
-  
+
+def doctor(request):
+    form = DoctorDetailForm(request.POST or None)
+    if form.is_valid():
+        form.save()
+        return doctorLogin(request)
+    return render(request, 'doctor.html', {'form': form})
+    
+def doctorLogin(request):
+    return render(request, 'doctorLogin.html')

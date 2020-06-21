@@ -1,11 +1,12 @@
 from django import forms
 from django.core import validators
-from .models import patientsPersonalDetail, Medicine, Order
+from .models import patientsPersonalDetail, Medicine, Order, DoctorDetail
 
 class DateInput(forms.DateInput):
     	input_type = 'date'
 
 class patient_personalDetailForm(forms.ModelForm):
+    required_css_class = 'required'
     class Meta:
         model = patientsPersonalDetail
         fields = ['user', 'dob', 'address', 'mobile']
@@ -23,6 +24,7 @@ class patient_personalDetailForm(forms.ModelForm):
         }
 
 class OrderForm(forms.ModelForm):
+    required_css_class = 'required'
     class Meta:
         model = Order
         fields = ('medicine', 'quantity')
@@ -31,4 +33,28 @@ class OrderForm(forms.ModelForm):
                 'class': 'form-control'
             }),
             'quantity' : forms.NumberInput(attrs={'class': 'form-control'}),
+        }
+
+class DoctorDetailForm(forms.ModelForm):
+    required_css_class = 'required'
+    class Meta:
+        model = DoctorDetail
+        fields = '__all__'
+        labels = {
+            'DoctorName' : "Name",
+            'DoctorEmail' : "Email Id",
+            'DoctorPassword' : "Password",
+        }
+        
+        widgets = {
+            'DoctorName' : forms.TextInput(attrs={'class': 'form-control'}),
+            'DoctorEmail' : forms.EmailInput(attrs={
+                'class': 'form-control',
+                'placeholder' : 'Please Enter Your Email Address'
+                }),
+            'DoctorPassword' : forms.PasswordInput(attrs={
+                'class': 'form-control',
+                'placeholder' : 'Please Enter Your Password'
+            }),
+            'Specialization' : forms.TextInput(attrs={'class': 'form-control'})    
         }
