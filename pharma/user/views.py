@@ -72,7 +72,7 @@ def patient_personalDetails(request):
     if len(sts.values_list()):
         d = {}
         details = sts.values_list()[0]
-        print(details)
+        #print(details)
         d['status'] = True
         return render(request, 'patient_personalDetails.html',{'d': d})
     else:
@@ -96,7 +96,7 @@ def edit(request):
     return render(request, 'edit.html', {'form': form})
 
 def buy_med(request):
-    form = OrderForm(request.POST or None, initial={'patient' : request.user} or None)
+    form = OrderForm(request.POST or None, initial={'patient' : request.user})
         
     if form.is_valid():
         qty = form.cleaned_data['quantity']
@@ -159,4 +159,13 @@ def doctor(request):
     return render(request, 'doctor.html', {'form': form})
     
 def doctorLogin(request):
+    if request.method == 'POST':
+        email = request.POST.get('email', False)
+        password = request.POST.get('password', False)
+        query = DoctorDetail.objects.filter(DoctorEmail=email).values()[0]['DoctorPassword']
+        if query==password:
+            return home(request)
+        else:
+            messages.info(request, "Wrong Credentials")
+            return render(request, 'wrong.html')   
     return render(request, 'doctorLogin.html')

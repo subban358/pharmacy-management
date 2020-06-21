@@ -33,7 +33,7 @@ class Order(models.Model):
 
 class DoctorDetail(models.Model):
     """All the details of the Doctors"""
-    DoctorName = models.CharField(max_length=100, error_messages={'required': 'hi'})
+    DoctorName = models.CharField(max_length=100)
     DoctorEmail = models.EmailField(max_length=100)
     DoctorPassword = models.CharField(max_length=20)
     Specialization = models.CharField(max_length=50)
