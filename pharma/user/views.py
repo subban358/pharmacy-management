@@ -3,9 +3,9 @@ from django.contrib.auth.models import User, auth
 from django.contrib import messages
 from django.http import HttpResponse
 from django.views.generic import View
-from .models import patientsPersonalDetail, Medicine, Order, DoctorDetail
+from .models import patientsPersonalDetail, Medicine, Order, DoctorDetail, Rating
 from django.views.decorators.csrf import csrf_exempt
-from .forms import patient_personalDetailForm, OrderForm, DoctorDetailForm
+from .forms import patient_personalDetailForm, OrderForm, DoctorDetailForm, RatingForm
 from django.core.mail import send_mail
 from django.conf import settings
 from .utils import render_to_pdf
@@ -97,7 +97,6 @@ def edit(request):
 
 def buy_med(request):
     form = OrderForm(request.POST or None, initial={'patient' : request.user})
-        
     if form.is_valid():
         qty = form.cleaned_data['quantity']
         med = form.cleaned_data['medicine']
@@ -164,8 +163,16 @@ def doctorLogin(request):
         password = request.POST.get('password', False)
         query = DoctorDetail.objects.filter(DoctorEmail=email).values()[0]['DoctorPassword']
         if query==password:
-            return home(request)
+            return render(request, 'doctorHome.html')
         else:
             messages.info(request, "Wrong Credentials")
             return render(request, 'wrong.html')   
     return render(request, 'doctorLogin.html')
+
+def ratedoc(request):
+    form = RatingForm(request.POST or None)
+    if form.is_valid():
+        form.instance.user = request.user
+        form.save(commit=True)
+        return home(request)
+    return render(request, 'ratedoc.html', {'form': form})

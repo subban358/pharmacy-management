@@ -15,4 +15,5 @@ urlpatterns = [
 	path('bill/<int:oid>', views.bill, name = 'bill'),
 	path('doctor', views.doctor, name = 'doctor'),
 	path('doctorLogin', views.doctorLogin, name = 'doctorLogin'),
+	path('ratedoc', views.ratedoc, name = 'ratedoc')
 ]

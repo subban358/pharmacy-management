@@ -40,5 +40,10 @@ class DoctorDetail(models.Model):
     def __str__(self):
         return "Dr. "+self.DoctorName
         
+class Rating(models.Model):
+    """All The ratings given to the doctor by the user """
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    doctor = models.ForeignKey(DoctorDetail, on_delete=models.CASCADE)
+    rating = models.IntegerField(default = 0, validators=[MaxValueValidator(5), MinValueValidator(1)])
 
 

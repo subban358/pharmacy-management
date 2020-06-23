@@ -1,6 +1,6 @@
 from django import forms
 from django.core import validators
-from .models import patientsPersonalDetail, Medicine, Order, DoctorDetail
+from .models import patientsPersonalDetail, Medicine, Order, DoctorDetail, Rating
 
 class DateInput(forms.DateInput):
     	input_type = 'date'
@@ -57,4 +57,17 @@ class DoctorDetailForm(forms.ModelForm):
                 'placeholder' : 'Please Enter Your Password'
             }),
             'Specialization' : forms.TextInput(attrs={'class': 'form-control'})    
+        }
+
+class RatingForm(forms.ModelForm):
+    class Meta:
+        model = Rating
+        fields = ['doctor', 'rating']
+        labels = {
+            'doctor' : 'Doctor',
+            'rating' : 'Rating'
+        }
+        widgets = {
+            'doctor' : forms.Select(attrs={'class': 'form-control'}),
+            'rating' : forms.NumberInput(attrs={'class': 'form-control'})
         }

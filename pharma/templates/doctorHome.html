@@ -4,31 +4,22 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <style>
-        label.required::after {
-            content: ' *';
-            color: red;
-        }
-    </style>
+
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 
-    <title>Doctors!</title>
+    <title>Doctor's Home !</title>
   </head>
   <body>
-    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 offset-3 float-md-center">
-        <div class="jumbotron mt-5">
-            <h2>Register as a Doctors</h2>
-            <div class="form-group">
-                <form method="POST">
-                    {% csrf_token %}
-                    {{form.as_p}}
-                    <input type="submit" class="btn btn-primary" value="submit">
-                </form>
-            </div>
-            <a href="doctorLogin" style="text-decoration: none; cursor : pointer;">Already Registered? Login here</a>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">Doctors Portal</a>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
         </div>
-    </div>
+    
+        <a href="doctorLogin" class="btn btn-danger my-2 my-sm-0" type="submit">Log out</a>
+        
+      </nav>
+    
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
