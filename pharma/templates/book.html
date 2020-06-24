@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-3">
+    <div class="jumbotron">
+        <h1>Top Rated Doctors</h1>
+        <br>
+        <table class="table">
+            <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Doctors Name</th>
+                  <th scope="col">Specialization</th>
+                  <th scope="col">Rating</th>
+                </tr>
+              </thead>
+            <tbody>
+                {% for i, j in context.items %}
+                <tr>
+                    <th scope="row">{{j.0}}</th>
+                    <td>{{i}}</td>
+                    <td>{{j.2}}</td>
+                    <td>{{j.1}} </td>
+                    <td><button type="button" class="btn btn-primary">Book Appointment</button></td>
+                </tr>
+                {% endfor%}
+            </tbody>
+        </table>    
+    </div>
+</div>
+{% endblock %}

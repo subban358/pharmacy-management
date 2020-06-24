@@ -9,6 +9,7 @@ from .forms import patient_personalDetailForm, OrderForm, DoctorDetailForm, Rati
 from django.core.mail import send_mail
 from django.conf import settings
 from .utils import render_to_pdf
+from collections import defaultdict
 
 
 def home(request):
@@ -151,6 +152,7 @@ def bill(request, oid):
     return HttpResponse(pdf, content_type='application/pdf')
 
 def doctor(request):
+    auth.logout(request)
     form = DoctorDetailForm(request.POST or None)
     if form.is_valid():
         form.save()
@@ -158,6 +160,7 @@ def doctor(request):
     return render(request, 'doctor.html', {'form': form})
     
 def doctorLogin(request):
+    auth.logout(request)
     if request.method == 'POST':
         email = request.POST.get('email', False)
         password = request.POST.get('password', False)
@@ -176,3 +179,18 @@ def ratedoc(request):
         form.save(commit=True)
         return home(request)
     return render(request, 'ratedoc.html', {'form': form})
+def book(request):
+    query = """
+            SELECT D.id, D.DoctorName, D.Specialization, ROUND(AVG(R.rating), 1) AS 'Rating' FROM user_doctordetail D, user_rating R 
+            WHERE D.id = R.doctor_id
+            GROUP BY D.id
+            ORDER BY Rating DESC LIMIT 5
+            """
+    got = Rating.objects.raw(query)        
+    context = defaultdict()
+    k = 1
+    for i in got:
+        context[i.DoctorName] = [k, i.Rating, i.Specialization]
+        k += 1
+    #print(context)        
+    return render(request, 'book.html',{'context': context})    
