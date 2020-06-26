@@ -17,4 +17,5 @@ urlpatterns = [
 	path('doctorLogin', views.doctorLogin, name = 'doctorLogin'),
 	path('ratedoc', views.ratedoc, name = 'ratedoc'),
 	path('book', views.book, name = 'book'),
+	path('confirm/<int:Did>', views.confirm, name = 'confirm'),
 ]

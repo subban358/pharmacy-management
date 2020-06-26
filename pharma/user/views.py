@@ -3,7 +3,7 @@ from django.contrib.auth.models import User, auth
 from django.contrib import messages
 from django.http import HttpResponse
 from django.views.generic import View
-from .models import patientsPersonalDetail, Medicine, Order, DoctorDetail, Rating
+from .models import patientsPersonalDetail, Medicine, Order, DoctorDetail, Rating, Appointment
 from django.views.decorators.csrf import csrf_exempt
 from .forms import patient_personalDetailForm, OrderForm, DoctorDetailForm, RatingForm
 from django.core.mail import send_mail
@@ -153,10 +153,12 @@ def bill(request, oid):
 
 def doctor(request):
     auth.logout(request)
-    form = DoctorDetailForm(request.POST or None)
-    if form.is_valid():
-        form.save()
-        return doctorLogin(request)
+    form = DoctorDetailForm()
+    if request.method == 'POST':
+        form = DoctorDetailForm(request.POST or None)
+        if form.is_valid():
+            form.save()
+            return render(request, 'doctorLogin.html')
     return render(request, 'doctor.html', {'form': form})
     
 def doctorLogin(request):
@@ -190,7 +192,16 @@ def book(request):
     context = defaultdict()
     k = 1
     for i in got:
-        context[i.DoctorName] = [k, i.Rating, i.Specialization]
+        context[i.DoctorName] = [k, i.Rating, i.Specialization, i.id]
         k += 1
     #print(context)        
     return render(request, 'book.html',{'context': context})    
+
+def confirm(request, Did):
+    print(id)
+    s = Appointment()
+    doc = DoctorDetail.objects.get(id=Did)
+    s.doctor = doc
+    s.patient = request.user
+    s.save()
+    return home(request)

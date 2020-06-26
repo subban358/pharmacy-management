@@ -22,7 +22,7 @@
                     <td>{{i}}</td>
                     <td>{{j.2}}</td>
                     <td>{{j.1}} </td>
-                    <td><button type="button" class="btn btn-primary">Book Appointment</button></td>
+                    <td><a href="{% url 'confirm' j.3 %}" type="button" class="btn btn-primary">Book Appointment</a></td>
                 </tr>
                 {% endfor%}
             </tbody>

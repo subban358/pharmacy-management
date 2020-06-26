@@ -46,4 +46,9 @@ class Rating(models.Model):
     doctor = models.ForeignKey(DoctorDetail, on_delete=models.CASCADE)
     rating = models.IntegerField(default = 0, validators=[MaxValueValidator(5), MinValueValidator(1)])
 
+class Appointment(models.Model):
+    """Details About the patients appointments"""
+    patient = models.ForeignKey(User, on_delete=models.CASCADE)
+    doctor = models.ForeignKey(DoctorDetail, on_delete=models.CASCADE)
+    status = models.BooleanField(default=False)
 
