@@ -167,8 +167,23 @@ def doctorLogin(request):
         email = request.POST.get('email', False)
         password = request.POST.get('password', False)
         query = DoctorDetail.objects.filter(DoctorEmail=email).values()[0]['DoctorPassword']
+        docId = DoctorDetail.objects.filter(DoctorEmail=email).values()[0]['id']
         if query==password:
-            return render(request, 'doctorHome.html')
+            string = """ 
+                        SELECT U.id, U.first_name, U.last_name FROM auth_user U
+                        WHERE U.id IN (
+                                SELECT UA.patient_id FROM user_appointment UA
+                                WHERE UA.doctor_id="""+str(docId)+""" AND UA.status=0
+                            );
+                    """
+            got = Appointment.objects.raw(string)
+            context = defaultdict()
+            k = 1
+            for i in got:
+                context[i.id] = [k, i.first_name, i.last_name]     
+                k += 1  
+            #print(context)     
+            return render(request, 'doctorHome.html', {'context': context})
         else:
             messages.info(request, "Wrong Credentials")
             return render(request, 'wrong.html')   
@@ -204,4 +219,5 @@ def confirm(request, Did):
     s.doctor = doc
     s.patient = request.user
     s.save()
-    return home(request)
+    docname = DoctorDetail.objects.filter(id=Did).values()[0]['DoctorName']
+    return render(request, 'confirm.html', {'docname':docname})

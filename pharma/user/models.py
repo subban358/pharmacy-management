@@ -52,3 +52,4 @@ class Appointment(models.Model):
     doctor = models.ForeignKey(DoctorDetail, on_delete=models.CASCADE)
     status = models.BooleanField(default=False)
 
+

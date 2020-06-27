@@ -19,6 +19,31 @@
         <a href="doctorLogin" class="btn btn-danger my-2 my-sm-0" type="submit">Log out</a>
         
       </nav>
+      <div class="container mt-3">
+        <div class="jumbotron">
+            <h1>Pending Appointments</h1>
+            <br>
+            <table class="table">
+                <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Patient's First Name</th>
+                      <th scope="col">Patient's Last Name</th>
+                    </tr>
+                  </thead>
+                <tbody>
+                    {% for i, j in context.items %}
+                    <tr>
+                        <th scope="row">{{j.0}}</th>
+                        <td>{{j.1}}</td>
+                        <td>{{j.2}} </td>
+                        <td><a href="#" type="button" class="btn btn-success">Give Report</a></td>
+                    </tr>
+                    {% endfor%}
+                </tbody>
+            </table>    
+        </div>
+    </div>
     
 
     <!-- Optional JavaScript -->
