@@ -1,6 +1,6 @@
 from django import forms
 from django.core import validators
-from .models import patientsPersonalDetail, Medicine, Order, DoctorDetail, Rating
+from .models import patientsPersonalDetail, Medicine, Order, DoctorDetail, Rating, Report
 
 class DateInput(forms.DateInput):
     	input_type = 'date'
@@ -70,4 +70,18 @@ class RatingForm(forms.ModelForm):
         widgets = {
             'doctor' : forms.Select(attrs={'class': 'form-control'}),
             'rating' : forms.NumberInput(attrs={'class': 'form-control'})
+        }
+class ReportForm(forms.ModelForm):
+    class Meta:
+        model = Report
+        fields = ['height', 'weight', 'blood_grp']       
+        labels = {
+            'height': 'Height',
+            'weight': 'Weight',
+            'blood_grp': 'Blood Group'
+        } 
+        widgets = {
+            'height':  forms.NumberInput(attrs={'step': 0.5, 'class': 'form-control'}),
+            'weight': forms.NumberInput(attrs={'class': 'form-control'}),
+            'blood_grp': forms.TextInput(attrs={'class': 'form-control'})
         }

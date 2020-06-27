@@ -18,4 +18,6 @@ urlpatterns = [
 	path('ratedoc', views.ratedoc, name = 'ratedoc'),
 	path('book', views.book, name = 'book'),
 	path('confirm/<int:Did>', views.confirm, name = 'confirm'),
+	path('report/<int:Did>/<int:Pid>', views.report, name = 'report'),
+	path('showReport', views.showReport, name ="showReport")
 ]

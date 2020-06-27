@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-3">
+    <div class="jumbotron">
+        <h1>{{pname}}, Your Report is Here</h1>
+        <br>
+        <h3>Report by Dr. {{dname}}</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Your Height</th>
+                  <th scope="col">Your Weight</th>
+                  <th scope="col">Your Blood Group</th>
+                </tr>
+              </thead>
+            <tbody>
+                <tr>
+                    <th scope="row">1</th>
+                    <td>{{height}}</td>
+                    <td>{{weight}} </td>
+                    <td>{{blood}}</td>
+                </tr>
+            </tbody>
+        </table> 
+        <br>
+        <div class="container">
+            <a href="{% url 'ratedoc' %}">Rate Your Doctor</a> 
+        </div>
+          
+    </div>
+</div>
+
+{% endblock %}

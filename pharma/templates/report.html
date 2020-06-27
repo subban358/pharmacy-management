@@ -1,0 +1,16 @@
+{% extends 'bootstrap.html' %}
+
+{% block bootstrap %}
+<div class="container mt-3">
+    <div class="jumbotron">
+        <h1>Create Report</h1>
+    <div class="form-group">
+        <form method="POST">
+            {% csrf_token %}
+            {{form.as_p}}
+            <input type="submit" class="btn btn-primary" value="submit">
+        </form>
+    </div>
+    </div>
+</div>
+{% endblock %}

@@ -3,9 +3,9 @@ from django.contrib.auth.models import User, auth
 from django.contrib import messages
 from django.http import HttpResponse
 from django.views.generic import View
-from .models import patientsPersonalDetail, Medicine, Order, DoctorDetail, Rating, Appointment
+from .models import patientsPersonalDetail, Medicine, Order, DoctorDetail, Rating, Appointment, Report
 from django.views.decorators.csrf import csrf_exempt
-from .forms import patient_personalDetailForm, OrderForm, DoctorDetailForm, RatingForm
+from .forms import patient_personalDetailForm, OrderForm, DoctorDetailForm, RatingForm, ReportForm
 from django.core.mail import send_mail
 from django.conf import settings
 from .utils import render_to_pdf
@@ -180,7 +180,7 @@ def doctorLogin(request):
             context = defaultdict()
             k = 1
             for i in got:
-                context[i.id] = [k, i.first_name, i.last_name]     
+                context[i.id] = [k, docId, i.first_name, i.last_name]     
                 k += 1  
             #print(context)     
             return render(request, 'doctorHome.html', {'context': context})
@@ -221,3 +221,49 @@ def confirm(request, Did):
     s.save()
     docname = DoctorDetail.objects.filter(id=Did).values()[0]['DoctorName']
     return render(request, 'confirm.html', {'docname':docname})
+
+def report(request, Did, Pid):
+    form = ReportForm()
+    if request.method == 'POST':
+        form = ReportForm(request.POST or None)
+        if form.is_valid():
+            ptn = User.objects.get(id=Pid)
+            doc = DoctorDetail.objects.get(id=Did)
+            print(ptn, doc)
+            entry = Report()
+            entry.doctor = doc
+            entry.patient = ptn
+            entry.height = form.cleaned_data['height']
+            entry.weight = form.cleaned_data['weight']
+            entry.blood_grp = form.cleaned_data['blood_grp']
+            entry.save()
+            update = Appointment.objects.get(patient=ptn, doctor=doc)
+            update.status = 1
+            update.save()
+            return render(request, 'doctorHome.html')    
+    return render(request, 'report.html', {'form': form})
+
+def showReport(request):
+    pid = request.user.id
+    query = """ 
+                SELECT id, doctor_id, patient_id, height, weight, blood_grp FROM user_report 
+                WHERE patient_id =""" + str(pid)+""" ORDER BY 'date' DESC"""   
+    qset = Report.objects.raw(query)
+    context = defaultdict()
+    for i in qset:
+        context[i.doctor_id] = [i.patient_id, i.height, i.weight, i.blood_grp]
+    did = list(context.keys())[0]
+    #print(did, context[did])
+    dname = DoctorDetail.objects.filter(id=did).values()[0]['DoctorName']
+    pname = request.user.first_name + ' ' + request.user.last_name  
+    height = context[did][1]
+    weight = context[did][2]
+    blood = context[did][3]
+    sent = {
+        'dname' : dname,
+        'pname' : pname,
+        'height': height,
+        'weight': weight,
+        'blood': blood
+    }
+    return render(request, 'got.html', sent)

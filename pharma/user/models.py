@@ -3,6 +3,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.utils import timezone
+from decimal import Decimal
 # Create your models here.
 class patientsPersonalDetail(models.Model):
     """Personal Details of Users"""
@@ -52,4 +53,11 @@ class Appointment(models.Model):
     doctor = models.ForeignKey(DoctorDetail, on_delete=models.CASCADE)
     status = models.BooleanField(default=False)
 
-
+class Report(models.Model):
+    """Report Data given to the patient by the doctor"""
+    doctor = models.ForeignKey(DoctorDetail, on_delete=models.CASCADE, null=True)
+    patient = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    height = models.DecimalField(default=Decimal('0.0'), decimal_places=1, max_digits=3)
+    weight = models.IntegerField(default=0)
+    blood_grp = models.CharField(max_length=10)
+    date = models.DateTimeField(auto_now_add=True, blank=True)
