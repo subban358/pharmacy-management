@@ -21,7 +21,7 @@ EMAIL_BACKEND = EMAIL_BACKEND
 
 import os
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+# Build paths inside the project like this: os.path.join(BASE_DIR, https://source.unsplash.com/1600x900/?nature,water)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
