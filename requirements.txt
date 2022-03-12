@@ -3,7 +3,7 @@ Django==3.0.7
 django-crispy-forms==1.9.1
 html5lib==1.0.1
 mysqlclient==1.4.6
-Pillow==7.1.2
+Pillow==9.0.1
 PyPDF2==1.26.0
 pytz==2020.1
 reportlab==3.5.42
